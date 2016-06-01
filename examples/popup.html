@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <meta name="Author" content="TanShenghu">
+    <title>弹出层 组件</title>
+    <link rel="stylesheet" href="http://www.tanshenghu.com/static/css/base.css">
+    <style>
+    .popBox{background-color:white;display:none;-webkit-border-radius:5px;border-radius:5px;border:1px solid #ddd}
+    .popBox .dialog-title{height:35px;line-height:35px;background-color:#f9f9f9;padding-left:10px;padding-right:10px;position:relative}
+    .popBox .dialog-title .titleTag{color:#666;font-size:16px;font-family:Microsoft Yahei,"\5FAE\8F6F\96C5\9ED1",Tahoma,Arial}
+    .popBox .dialog-title i.closeMe{width:30px;height:30px;line-height:30px;position:absolute;right:10px;top:50%;margin-top:-15px;cursor:pointer;color:#666;font-weight:bold;font-size:20px;text-align:center}
+    .popBox .dialogContent{padding:15px 20px 10px 20px;box-sizing:border-box}
+    .popBox .dialogContent table{width:100px;width:100%}
+    .popBox .dialogContent table.SYS-Tip-tbl .tipIco{background:url("//gtms02.alicdn.com/tps/i2/TB1NsHPIFXXXXcqapXXBS2R9XXX-130-131.png") no-repeat;width:62px;height:62px}
+    .popBox .dialogContent table.SYS-Tip-tbl th{width:70px;vertical-align:top}
+    .popBox .dialogContent table.SYS-Tip-tbl th .Ico_1{background-position:-1px -1px}.popBox .dialogContent table.SYS-Tip-tbl th .Ico_2{background-position:-66px -1px}
+    .popBox .dialogContent table.SYS-Tip-tbl th .Ico_3{background-position:-1px -67px}
+    .popBox .dialogContent table.SYS-Tip-tbl th .Ico_4{background-position:-66px -67px}
+    .popBox .handlerBox{text-align:center;margin-top:10px;padding-bottom:10px}
+    .popBox .handlerBox .ui-okBtn{display:inline-block;text-align:center;padding-left:15px;padding-right:15px;height:25px;line-height:25px;background-color:#4c8bdc;cursor:pointer;vertical-align:middle;color:white;-webkit-border-radius:3px;border-radius:3px;border:1px solid #2870cd;font-family:Microsoft Yahei,"\5FAE\8F6F\96C5\9ED1",Tahoma,Arial}
+    .popBox .handlerBox .ui-okBtn:hover{background-color:#77a7e4;border-color:#4c8bdc}
+    .popBox .handlerBox .ui-okBtn[disabled]{border-color:#999 !important;background-color:#dedede !important;color:#888;-webkit-text-shadow:1px 1px 1px white;text-shadow:1px 1px 1px white;cursor:not-allowed}
+    .popBox .handlerBox .ui-cancel{display:inline-block;text-align:center;padding-left:15px;padding-right:15px;height:25px;line-height:25px;background-color:#d1d1d1;cursor:pointer;vertical-align:middle;color:#888;-webkit-border-radius:3px;border-radius:3px;border:1px solid #b8b8b8;font-family:Microsoft Yahei,"\5FAE\8F6F\96C5\9ED1",Tahoma,Arial;margin-left:20px}
+    .popBox .handlerBox .ui-cancel:hover{background-color:#ebebeb;border-color:#d1d1d1}
+    .popBox .handlerBox .ui-cancel[disabled]{border-color:#999 !important;background-color:#dedede !important;color:#888;-webkit-text-shadow:1px 1px 1px white;text-shadow:1px 1px 1px white;cursor:not-allowed}
+    .popBox .dialog-title{-webkit-border-radius:5px 5px 0 0;border-radius:5px 5px 0 0}
+    </style>
+    <script src="http://a.alipayobjects.com/??seajs/seajs/2.2.0/sea.js,jquery/jquery/1.8.2/jquery.js"></script>
+    <script>
+    seajs.config({
+      paths: {
+            host: 'http://www.tanshenghu.com',
+            widget: 'http://www.tanshenghu.com/widget'
+        },
+        alias: {
+            $: 'host/static/js/$',
+            popup: 'widget/popup/1.0.0/popup'
+        }
+    });
+    </script>
+</head>
+<body>
+    <div><button class="trigger">按钮1</button> <button class="trigger">按钮2</button> <button class="trigger">按钮3</button></div>
+    <div class="popBox" id="pop">
+        <div class="dialog-title"><label class="titleTag">系统提示</label><i class="closeMe">&times;</i></div>
+        <div class="dialogContent">
+            拖动层之后再点后面的按钮
+            <button class="reset">重新居中定位</button>
+        </div>
+        <div class="handlerBox"><button class="ui-okBtn">确定</button> <button class="ui-cancel closeMe">取消</button></div>
+    </div>
+    <script>
+    seajs.use('popup', function( Popup ){
+        
+        var obox = Popup({
+            hand: '.trigger',
+            box: '#pop',
+            cover: true,
+            zIndex: 10,
+            drag: true,
+            fixed: 'absolute',
+            width: 320,
+            //height: 230,
+            callback: function( box ){
+                // this => 事件源，即button按钮
+            },
+            okfn: function( hand, box ){
+                // this => 事件源，即button按钮
+                alert('刚才点我的那个按钮叫:'+$(this).text());
+                box.Hide(); // 关闭层方法
+                //box.Show(); // 显示层方法
+            },
+            hidefn: function(){
+                
+            }
+        })
+        //.Show(); // 直接Show方法之后浮层会自动显示
+        
+        obox.find('.reset').on('click', function(){
+            obox.reSetPos();
+        })
+        
+    });
+    </script>
+</body>
+</html>
